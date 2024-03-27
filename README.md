@@ -307,3 +307,18 @@ HTTP 요청 메시지를 통해 클라이언트에서 서버로 데이터를 전
 - 데이터 형식은 주로 JSON 사용
 - POST, PUT, PATCH
 
+# /24-03-27
+## HTTP 요청 데이터 - GET 쿼리 파라미터
+다음 데이터를 클라이언트에서 서버로 전송해보자
+전달 데이터
+- username = hello
+- age = 20
+메시지 바디 없이, URL의 쿼리 파라미터를 사용해서 데이터를 전달하자
+예) 검색, 필터, 페이징등에서 많이 사용하는 방식
+
+### 복수 파라미터에서 단일 파라미터 조회
+username=hello&username=kim 과 같이 파라미터 이름은 하나인데, 값이 중복이면 어떻게 될까?
+request.getParameter()는 하나의 파라미터 이름에 대해서 단 하나의 값만 있을 때 사용해야한다.
+지금처럼 중복일 때는 request.getParameterValues()를 사용해야 한다.
+참고로 이렇게 중복일 때 request.getParameter()를 사용하면 request.getParameterValues()의 첫번째 값을 반환한다.
+
