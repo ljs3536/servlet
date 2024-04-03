@@ -394,5 +394,6 @@ HTTP 응답 메시지는 주로 다음 내용을 담아서 전달한다.
 - HTML 응답
 - HTTP API, MessageBody JSON 응답
 
-
+# /24-04-02
+## HTTP 응답 데이터 - API JSON
 
