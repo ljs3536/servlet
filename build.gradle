@@ -26,7 +26,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	//JSP 추가 시작
 	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
-	implementation group: 'javax.servlet', name: 'jstl', version: '1.2'
+	implementation group: 'org.glassfish.web', name: 'jakarta.servlet.jsp.jstl', version: '2.0.0'
 
 	//JSP 추가 끝
 	compileOnly 'org.projectlombok:lombok'
