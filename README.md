@@ -540,3 +540,23 @@ HttpServletRequest request, HttpServletResponse response
 프론트 컨트롤러는 이 인터페이스를 구현한 컨트롤러를 만들어보자.
 지금 단계에서는 기존 로직을 최대한 유지하는게 핵심이다.
 
+# /24-04-13
+내부 로직은 기존 서블릿과 거의 같다.
+이제 프론트 컨트롤러를 만들어보자.
+
+### 프론트 컨트롤러 부석
+#### urlPatterns
+- urlPatterns = "/front-controller/v1/*" : /front-controller/v1 를 포함한 하위 모든 요청은 이 서블릿에서 받아들인다.
+
+#### controllerMap
+- key : 매핑URL
+- value : 호출된 컨트롤러
+
+#### service()
+먼저 requestURI를 조회해서 실제 호출할 컨트롤러를 controllerMap에서 찾는다.
+만약 없다면 404(SC_NOT_FOUND)상태 코드를 반환한다.
+컨트롤러를 찾고 controller.process(request, response)를 호출해서 해당 컨트롤러를 실행한다.
+
+#### JSP
+JSP는 이전 MVC에서 사용했던 것을 그대로 사용한다.
+
