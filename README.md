@@ -560,3 +560,18 @@ HttpServletRequest request, HttpServletResponse response
 #### JSP
 JSP는 이전 MVC에서 사용했던 것을 그대로 사용한다.
 
+# /24-04-14
+## View 분리 - V2
+모든 컨트롤러에서 뷰로 이동하는 부분에 중복이 있고, 깔끔하지 않다.
+이 부분을 깔끔하게 분리하기 위해 별도로 뷰를 처리하는 객체를 만들자.
+
+### MyView
+뷰 객체는 이후 다른 버전에서도 함께 사용하므로 패키지 위치를 frontcontroller에 두었다.
+
+ControllerV2의 반환 타입이 MyView이므로 프론트 컨트롤러는 컨트롤러의 호출 결과로 MyView를 반환 받는다.
+그리고 view.render()를 호출하면 forward로직을 수행해서 JSP가 실행된다.
+
+프론트 컨트롤러의 도입으로 MyView객체의 render()를 호출하는 부분을 모두 일관되게 처리할 수 있다.
+각각의 컨트롤러는 MyView객체를 생성만 해서 반환하면 된다.
+
+
