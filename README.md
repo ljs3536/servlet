@@ -560,3 +560,45 @@ HttpServletRequest request, HttpServletResponse response
 #### JSP
 JSP는 이전 MVC에서 사용했던 것을 그대로 사용한다.
 
+# /24-04-14
+## View 분리 - V2
+모든 컨트롤러에서 뷰로 이동하는 부분에 중복이 있고, 깔끔하지 않다.
+이 부분을 깔끔하게 분리하기 위해 별도로 뷰를 처리하는 객체를 만들자.
+
+### MyView
+뷰 객체는 이후 다른 버전에서도 함께 사용하므로 패키지 위치를 frontcontroller에 두었다.
+
+ControllerV2의 반환 타입이 MyView이므로 프론트 컨트롤러는 컨트롤러의 호출 결과로 MyView를 반환 받는다.
+그리고 view.render()를 호출하면 forward로직을 수행해서 JSP가 실행된다.
+
+프론트 컨트롤러의 도입으로 MyView객체의 render()를 호출하는 부분을 모두 일관되게 처리할 수 있다.
+각각의 컨트롤러는 MyView객체를 생성만 해서 반환하면 된다.
+
+# /24-04-15
+## Model 추가 - V3
+### 서블릿 종속성 제거
+컨트롤러 입장에서 HttpServletRequest, HttpServletResponse이 꼭 필요할까?
+요청 파라미터 정보는 자바의 Map으로 대신 넘기도록 하면 지금 구조에서는 컨트롤러가 서블릿 기술을 몰라도 동작할 수 있다.
+그리고 request 객체를 Model로 사용하는 대신에 별도의 Model 객체를 만들어서 반환하면 된다.
+우리가 구현하는 컨트롤러가 서블릿 기술을 전혀 사용하지 않도록 변경해보자.
+이렇게 하면 구현 코드도 매우 단순해지고, 테스트 코드 작성이 쉽다.
+
+### 뷰 이름 중복 제거
+컨트롤러에서 지정하는 뷰 이름에 중복이 있는 것을 확인할 수 있다.
+컨트롤러는 뷰의 논리 이름을 반환하고, 실제 물리 위치의 이름은 프론트 컨트롤러에서 처리하도록 단순화 하자.
+이렇게 해두면 향후 뷰의 폴더 위치가 함께 이동해도 프론트 컨트롤러만 고치면 된다.
+- /WEB-INF/views/new-form.jsp -> new-form
+- /WEB-INF/views/save-result.jsp -> save-result
+- /WEB-INF/views/members.jsp -> members
+
+### V3구조
+
+### ModelView
+지금까지 컨트롤러에서 서블릿에 종속적인 HttpServletRequest를 사용했다. 
+그리고 Model도 request.setAttribute()를 통해 데이터를 저장하고 뷰에 전달했다.
+서블릿의 종속성을 제거하기 위해 Model을 직접 만들고, 추가로 View 이름까지 전달하는 객체를 만들어보자.
+(이번 버전에서는 컨트롤러에서 HttpServletRequest를 사용할 수 없다. 
+따라서 직접 request.setAttribute()를 호출할 수도 없다. 따라서 Model이 별도로 필요하다.)
+
+참고로 ModelView 객체는 다른 버전에서도 사용하므로 패키지를 frontcontroller에 둔다.
+
