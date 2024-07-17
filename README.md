@@ -826,3 +826,48 @@ HandlerAdapter = HttpRequestHandlerAdapter
 @RequestMapping의 앞글자를 따서 만든 이름인데 이것이 지금 스프링에서 주로 사용하는 애노테이션 기반의 컨트롤ㄹ러를 지원하는 매핑과 어댑터이다.
 실무에서는 99.9% 이 방식의 컨트롤러를 사용한다.
 
+# /24-07-17
+## 뷰 리졸버
+### 뷰리졸버 - InternalResourceViewResolver
+스프링 부트는 InternalReourceViewResolver라는 뷰 리졸버를 자동으로 등록하는데, 이때
+application.properties에 등록한 spring.mvc.view.prefix, spring.mvc.view.suffix 설정 정보를 사용해서 등록한다.
+
+### 뷰 리졸버 동작 방식
+스프링 부트가 자동으로 등록하는 뷰 리졸버
+1 = BeanNameViewResolver : 빈 이름으로 뷰를 찾아서 반환한다.
+2 = InternalResouceViewResolver : JSP를 처리할 수 있는 뷰를 반환한다.
+
+1. 핸들러 어댑터 호출
+  핸들러 어댑터를 통해 new-form이라는 논리 뷰 이름을 획득한다.
+2. ViewResolver 호출
+- new-form이라는 뷰 이름으로 viewResolver를 순서대로 호출한다.
+- BeanNameViewResolversms new-form이라는 이름의 스플이 빈으로 등록된 뷰를 찾아야 하는데 없다.
+- InternalResouceViewResolver가 호출된다.
+3. InternalResourceViewResolver
+  이 뷰 리졸버는 InternalResourceView를 반환한다.
+4. 뷰 - InternalResourceView
+  JSP처럼 포워드 forward()를 호출해서 처리할 수 있는 경우에 사용한다.
+5. view.render()
+  view.render()가 호출되고 InternalResourceView는 forward()를 사용해서 JSP를 실행한다.
+
+### 참고
+InternalResourceViewResolver는 만약 JSTL 라이브러리가 있으면 InternalResourceView를 상속받은 JstlView를 반환한다.
+JstlView는 JSTL 태그 사용시 약간의 부가 기능이 추가된다.
+
+### 참고
+다른 뷰는 실제 뷰를 랜더링하지만, JSP의 경우 forward()를 통해서 해당 JSP로 이동(실행)해야 렌더링 된다.
+JSP를 제외한 나머지 뷰 템플릿들은 forward() 과정 없이 바로 렌더링된다.
+
+### 참고
+Thymelear 뷰 템플릿을 사용하면 ThymeleafViewResolver를 등록해야 한다.
+최근에는 라이브러리만 추가하면 스프링 부트가 이런 작업도 모두 자동화해준다.
+
+
+## 스프링 MVC - 시작하기
+스프링이 제공하는 컨트롤러는 애노테이션 기반으로 동작해서, 매우 유연하고 실용적이다.
+과거에는 자바 언어에 애노테이션이 없기도 했고, 스프링도 처음부터 이런 유연한 컨트롤러를 제공한 것은 아니다.
+
+### @RequestMapping
+스프링은 애노테이션을 활용한 매우 유연하고, 실용적인 컨트롤러를 만들었는데 이것이 바로 @RequestMapping 애노테이션을 사용하는 컨트롤러이다.
+다들 한번쯤 사용해 보았을 것이다. 여담이지만 과거에는 스프링 프레임워크가 MVC 부분이 약해서 스프링을 사용하더라도 MVC 웹 기술은 스트릿츠 같은 다른 
+프레임워크를 사용했었다. 그런데 @RequestMapping 기반의 애노테이션 컨트롤러가 등장하면서, MVC 부분도 스프링의 완승으로 끝이났다.
