@@ -891,3 +891,24 @@ RequestMappingHandlerMapping은 스프링 빈 중에서 @RequestMapping Ehsms @C
 물론 이렇게 사용해도 되지만, 컨트롤러를 통합한 예제 코드를 보면 중복을 어떻게 제거 했는지 확인할 수 있다.
 클래스 레벨에 다음과 같이 @RequestMapping("/springmvc/v2/members")를 두면 메서드 레벨과 조합이 된다.
 
+# /24-07-21
+## 스프링MVC - 실용적인 방식
+MVC프레임워크 만들기에서 v3은 ModelView를 개발자가 직접 생성해서 반환했기 때문에, 불편했던 기억이 날 것이다.
+물론 v4를 만들면서 실용적으로 개선한 기억도 날 것이다.
+
+스프링 MVC는 개발자가 편리하게 개발할 수 있도록 수 많은 편의 기능을 제공한다.
+"실무에서는 지금부터 설명하는 방식을 주로 사용한다."
+
+### Model파라미터
+save(), members()를 보면 Model을 파라미터로 받는 것을 확인할 수 있다.
+스프링 MVC도 이런 편의 기능을 제공한다.
+### ViewName 직접 반환
+뷰의 논리 이름을 반환할 수 있다.
+
+### @RequestParam사용
+스프링은 HTTP요청 파라미터를 @RequestParam으로 받을 수 있다.
+@RequestParam("username")은 request.getParameter("username")와 거의 같은 코드라 생각하면 된다.
+물론 GET 쿼리 파라미터, POST Form 방식을 모두 지원한다.
+
+### @RequestMapping + @GetMapping + @PostMapping
+@RequestMapping은 URL만 매핑하는 것이 아니라, HTTP Method도 함께 구분할 수 있다.
