@@ -912,3 +912,6 @@ save(), members()를 보면 Model을 파라미터로 받는 것을 확인할 수
 
 ### @RequestMapping + @GetMapping + @PostMapping
 @RequestMapping은 URL만 매핑하는 것이 아니라, HTTP Method도 함께 구분할 수 있다.
+
+# /24-07-22
+## 정리
